@@ -52,6 +52,8 @@ public class AllyPerceptionSystem : MonoBehaviour
 
     void UpdatePerception()
     {
+        CleanupDestroyedObjects();
+
         DetectEnemies();
         DetectHealthPickups();
         CheckThreats();
@@ -137,22 +139,36 @@ public class AllyPerceptionSystem : MonoBehaviour
     {
         if (detectedEnemies.Count == 0) return null;
 
-        return detectedEnemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
+        return detectedEnemies.Where(IsValid).OrderBy(e => Vector3.Distance(transform.position , e.transform.position)).FirstOrDefault();
+        //return detectedEnemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
     }
 
     public GameObject GetPlayerAttacker()
     {
         if(detectedEnemies.Count == 0 || playerTransform == null) return null;
 
-        return detectedEnemies.OrderBy(e => Vector3.Distance(playerTransform.position, e.transform.position)).FirstOrDefault();
+
+        return detectedEnemies.Where(IsValid).OrderBy(e => Vector3.Distance(playerTransform.position, e.transform.position)).FirstOrDefault();
     }
 
     public GameObject GetNearestHealthPickup()
     {
         if (detectedHealthPickups.Count == 0) return null;
 
-        return detectedHealthPickups.OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).FirstOrDefault();
+        return detectedHealthPickups.Where(IsValid).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).FirstOrDefault();
     }
+
+    private static bool IsValid(GameObject obj)
+    {
+        return obj != null && obj.activeInHierarchy;
+    }
+
+    private void CleanupDestroyedObjects()
+    {
+        detectedEnemies.RemoveAll(e => !IsValid(e));
+        detectedHealthPickups.RemoveAll(p => !IsValid(p));
+    }
+
 
     private void OnDrawGizmosSelected()
     {

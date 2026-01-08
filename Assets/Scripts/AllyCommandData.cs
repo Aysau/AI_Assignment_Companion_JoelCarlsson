@@ -27,11 +27,11 @@ public class AllyCommandData : MonoBehaviour
     public bool isPlayerUnderAttack = false; //Is the player under attack
     public bool isAreaSafe = true;
 
-    public float currentHealth = 100f;
-    public float maxHealth = 100f;
 
 
     public Transform playerTransform;
+    public Health playerHealth;
+    public Health selfHealth;
 
     public GameObject[] nearbyEnemies = new GameObject[0];
     public GameObject[] nearbyHealthPickups = new GameObject[0];
@@ -40,7 +40,12 @@ public class AllyCommandData : MonoBehaviour
     public Vector3 followPosition;
     public float followDistance;
 
-    public float HealthPercentage => currentHealth / maxHealth;
+    public float HealthPercentage => selfHealth.currentHealth / selfHealth.maxHealth;
+
+    private void Awake()
+    {
+        selfHealth = GetComponent<Health>();
+    }
 
     public bool IsHealthCritical(float threshold = 0.25f) //Check if health is critical
     {
@@ -49,7 +54,11 @@ public class AllyCommandData : MonoBehaviour
 
     public bool IsPlayerHealthLow(float treshhold = 0.5f)
     {
-        return false; //TODO Add player health check
+        if(playerHealth == null)
+        {
+            playerHealth = playerTransform.GetComponent<Health>();
+        }
+        return (playerHealth.currentHealth / playerHealth.maxHealth) <= treshhold;
     }
 
     public void PauseCurrentCommand(AllyCommand newCommand)
@@ -88,7 +97,7 @@ public class AllyCommandData : MonoBehaviour
 
     public bool IsTargetObjectValid()
     {
-        return targetEnemy != null && targetObject.activeInHierarchy;
+        return targetObject != null && targetObject.activeInHierarchy;
     }
 
     public Vector3 GetFollowPosition()

@@ -9,7 +9,8 @@ using Action = Unity.Behavior.Action;
 [NodeDescription(name: "FleeFromDanger", story: "Calculates positon away from nearest enemy, and moves to it.", category: "Action", id: "68438be64de3489f27104bfaed406170")]
 public partial class FleeFromDangerAction : Action
 {
-
+    [SerializeReference]
+    public BlackboardVariable<AllyCommandData> allyCommandData;
     [SerializeReference]
     public BlackboardVariable<Transform> allyTransform;
     [SerializeReference]
@@ -33,7 +34,8 @@ public partial class FleeFromDangerAction : Action
 
         if(nearestEnemy == null)
         {
-            navAgent.Value.isStopped = true;
+            //navAgent.Value.isStopped = true;
+            allyCommandData.Value.ClearCommand();
             return Status.Success;
         }
 

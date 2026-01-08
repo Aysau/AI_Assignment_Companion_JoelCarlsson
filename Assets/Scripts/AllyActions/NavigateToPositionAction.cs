@@ -46,10 +46,7 @@ public partial class NavigateToPositionAction : Action
         //    return Status.Success;
         //}
 
-        //if(positionType.Value == PositionType.FollowPosition && commandChanged)
-        //{
-        //    return Status.Failure;
-        //}
+
 
         navAgent.Value.isStopped = false;
         navAgent.Value.SetDestination(targetPos);

@@ -13,6 +13,8 @@ public partial class GiveHealthToPlayerAction : Action
     [SerializeReference]
     public BlackboardVariable<AllyCommandData> commandData;
     [SerializeReference]
+    public BlackboardVariable<float> healAmount;
+    [SerializeReference]
     public BlackboardVariable<float> giveRange;
     protected override Status OnStart()
     {
@@ -25,7 +27,7 @@ public partial class GiveHealthToPlayerAction : Action
 
         if(distance <= giveRange)
         {
-            //TODO Implement ally giving health to player
+            commandData.Value.playerHealth.Heal(healAmount);
 
             Debug.Log("[Ally] Gave health pickup to player");
 

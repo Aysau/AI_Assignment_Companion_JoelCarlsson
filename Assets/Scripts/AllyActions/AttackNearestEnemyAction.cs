@@ -21,6 +21,8 @@ public partial class AttackNearestEnemyAction : Action
     public BlackboardVariable<float> attackCooldown;
     [SerializeReference]
     public BlackboardVariable<float> lastAttackTime;
+    [SerializeReference]
+    public BlackboardVariable<float> damageAmount;
     protected override Status OnStart()
     {
         return Status.Running;
@@ -65,8 +67,16 @@ public partial class AttackNearestEnemyAction : Action
 
     void PerformAttack(GameObject enemy)
     {
-        //TODO implement attack logic
-        Debug.Log($"[Ally] Attacking nearest eneny: {enemy.name}");
+        Health targetHealth = enemy.GetComponent<Health>();
+        if (targetHealth != null)
+        {
+            targetHealth.TakeDamage(damageAmount);
+            Debug.Log($"[Ally] Attacking {enemy.name} for {damageAmount.Value} damage");
+        }
+        else
+        {
+            Debug.Log($"[Ally] Attacking nearest eneny: {enemy.name}");
+        }
     }
 }
 

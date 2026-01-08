@@ -32,13 +32,13 @@ public partial class IdleAtPositionAction : Action
         {
             navAgent.Value.isStopped = false;
             navAgent.Value.SetDestination(idlePos);
-            return Status.Running;
         }
-        else
-        {
-            navAgent.Value.isStopped = true;
-            return Status.Success;
-        }
+        return Status.Running;
+        //else
+        //{
+        //    navAgent.Value.isStopped = true;
+        //    return Status.Success;
+        //}
     }
     private Vector3 GetTargetPosition()
     {

@@ -17,6 +17,9 @@ public partial class CollectHealthPickupAction : Action
     public BlackboardVariable<float> collectRange;
     [SerializeReference]
     public BlackboardVariable<float> healAmount;
+    [SerializeReference]
+    public BlackboardVariable<bool> giveToPlayer;
+
     protected override Status OnStart()
     {
         GameObject pickup = commandData.Value.targetPickup;
@@ -30,11 +33,19 @@ public partial class CollectHealthPickupAction : Action
 
         if(distance <= collectRange)
         {
-            commandData.Value.currentHealth = Mathf.Min(commandData.Value.currentHealth + healAmount, commandData.Value.maxHealth);
+            if (!giveToPlayer)
+            {
+                commandData.Value.selfHealth.currentHealth = Mathf.Min(commandData.Value.selfHealth.currentHealth + healAmount, commandData.Value.selfHealth.maxHealth);
 
-            //TODO Implement actual pickup collection
 
-            Debug.Log($"[Ally] Collected health pickup! Health: {commandData.Value.currentHealth}/{commandData.Value.maxHealth}");
+
+                Debug.Log($"[Ally] Collected health pickup! Health: {commandData.Value.selfHealth.currentHealth}/{commandData.Value.selfHealth.maxHealth}");
+            }
+            else
+            {
+                Debug.Log($"[Ally] Collected health pickup for player!");
+            }
+            
 
             pickup.SetActive(false);
 

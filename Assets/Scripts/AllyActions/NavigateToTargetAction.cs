@@ -28,6 +28,8 @@ public partial class NavigateToTargetAction : Action
     [SerializeReference]
     public BlackboardVariable<TargetType> targetType;
     [SerializeReference]
+    public BlackboardVariable<bool> successOnDestination;
+    [SerializeReference]
     public BlackboardVariable<Transform> allyTransform;
     [SerializeReference]
     public BlackboardVariable<NavMeshAgent> navAgent;
@@ -49,9 +51,9 @@ public partial class NavigateToTargetAction : Action
 
         float distance = Vector3.Distance(allyTransform.Value.position, target.transform.position);
 
-        if(distance <= arriveDistance)
+        if (distance <= arriveDistance && successOnDestination)
         {
-            navAgent.Value.isStopped = true;
+            //navAgent.Value.isStopped = true;
             return Status.Success;
 
         }

@@ -23,6 +23,7 @@ public partial class FindNearestHealthPickupAction : Action
         }
 
         commandData.Value.targetPickup = pickup;
+        commandData.Value.targetObject = pickup;
 
         return Status.Success;
     }

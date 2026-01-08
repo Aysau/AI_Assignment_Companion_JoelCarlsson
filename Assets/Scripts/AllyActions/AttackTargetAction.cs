@@ -26,7 +26,7 @@ public partial class AttackTargetAction : Action
     [SerializeReference]
     public BlackboardVariable<float> lastAttackTime;
     [SerializeReference]
-    public BlackboardVariable<int> damageAmount;
+    public BlackboardVariable<float> damageAmount;
     protected override Status OnStart()
     {
         return Status.Running;
@@ -65,8 +65,17 @@ public partial class AttackTargetAction : Action
 
     void PerformAttack(GameObject target)
     {
-        //TODO implement attack logic
-        Debug.Log($"[Ally] Attacking {target.name} for {damageAmount} damage");
+        Health targetHealth = target.GetComponent<Health>();
+        if(targetHealth != null)
+        {
+            targetHealth.TakeDamage(damageAmount);
+            Debug.Log($"[Ally] Attacking {target.name} for {damageAmount.Value} damage");
+        }
+        else
+        {
+            Debug.LogError($"[Ally] tried attacking {target.name} but there was no health component");
+        }
+ 
     }
     private GameObject GetTarget()
     {

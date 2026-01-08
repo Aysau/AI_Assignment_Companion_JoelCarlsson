@@ -3,6 +3,7 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
+using Unity.AppUI.UI;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "PerformInteraction", story: "Perform interaction with an object", category: "Action", id: "44626ee06ca4b269c9d3bd6f32a52d48")]
@@ -27,9 +28,20 @@ public partial class PerformInteractionAction : Action
 
         if(distance <= interactRange)
         {
-            //TODO Implement interaction logic
+            InteractableButton button = commandData.Value.targetObject.GetComponent<InteractableButton>();
+            if(button != null)
+            {
+                button.Press();
+                Debug.Log($"[Ally] Interacted with {target.name}");
+            }
+            else
+            {
+                Debug.LogError("[Ally] No InteractableButton script found on targetObject");
+                return Status.Failure;
+            }
+            
 
-            Debug.Log($"[Ally] Interacted with {target.name}");
+            
 
             return Status.Success;
         }

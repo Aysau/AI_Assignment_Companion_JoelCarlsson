@@ -3,6 +3,7 @@ using Unity.Behavior;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 using Action = Unity.Behavior.Action;
 
 [Serializable, GeneratePropertyBag]
@@ -22,6 +23,8 @@ public partial class AttackPlayerAttackerAction : Action
     public BlackboardVariable<float> attackCooldown;
     [SerializeReference]
     public BlackboardVariable<float> lastAttackTime;
+    [SerializeReference]
+    public BlackboardVariable<float> damageAmount;
     protected override Status OnStart()
     {
         return Status.Running;
@@ -66,8 +69,17 @@ public partial class AttackPlayerAttackerAction : Action
 
     void PerformAttack(GameObject enemy)
     {
-        //TODO implement attack logic
-        Debug.Log($"[Ally] Defending player from: {enemy.name}");
+        Health targetHealth = enemy.GetComponent<Health>();
+        if (targetHealth != null)
+        {
+            targetHealth.TakeDamage(damageAmount);
+            Debug.Log($"[Ally] Attacking {enemy.name} for {damageAmount} damage");
+        }
+        else
+        {
+            Debug.Log($"[Ally] Defending player from: {enemy.name}");
+        }
+            
     }
 }
 
