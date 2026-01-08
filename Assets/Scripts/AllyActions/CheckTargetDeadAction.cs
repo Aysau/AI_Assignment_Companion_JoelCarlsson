@@ -20,7 +20,7 @@ public partial class CheckTargetDeadAction : Action
         }
         else
         {
-            return Status.Failure; //TODO Maybe make running if it doesnt work like this
+            return Status.Failure; 
         }
     }
 

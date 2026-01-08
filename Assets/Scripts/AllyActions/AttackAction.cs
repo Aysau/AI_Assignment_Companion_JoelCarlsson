@@ -44,7 +44,7 @@ public partial class AttackAction : Action
             currentAttackCooldown = Mathf.Max(currentAttackCooldown - Time.deltaTime, 0);
 
         }
-        return Status.Running;
+        return Status.Success;
     }
 
 }

@@ -48,6 +48,8 @@ public class AllyPerceptionSystem : MonoBehaviour
             UpdatePerception();
             perceptionTimer = 0f;
         }
+
+        
     }
 
     void UpdatePerception()

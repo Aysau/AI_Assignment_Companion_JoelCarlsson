@@ -27,8 +27,6 @@ public class AllyCommandData : MonoBehaviour
     public bool isPlayerUnderAttack = false; //Is the player under attack
     public bool isAreaSafe = true;
 
-
-
     public Transform playerTransform;
     public Health playerHealth;
     public Health selfHealth;
@@ -46,7 +44,14 @@ public class AllyCommandData : MonoBehaviour
     {
         selfHealth = GetComponent<Health>();
     }
-
+    private void Update()
+    {
+        if(currentCommand == AllyCommand.AttackTarget && targetEnemy == null)
+        {
+            Debug.Log("[Ally] Target destroyed, resuming follow");
+            currentCommand = AllyCommand.None;
+        }
+    }
     public bool IsHealthCritical(float threshold = 0.25f) //Check if health is critical
     {
         return HealthPercentage < threshold;
@@ -102,13 +107,19 @@ public class AllyCommandData : MonoBehaviour
 
     public Vector3 GetFollowPosition()
     {
-        Vector3 followPos = playerTransform.position - playerTransform.forward * followDistance;
-        return followPos;
+        Vector3 offset = transform.position - playerTransform.position;
+
+        if(offset.magnitude > followDistance)
+            return playerTransform.position + offset.normalized * followDistance;
+
+        return transform.position;
+        //Vector3 followPos = playerTransform.position - playerTransform.forward * followDistance;
+        //return followPos;
     }
 
 }
 
-public static class CommandPriority
+public static class CommandPriority //NOT USED
 {
     public static int GetPriority(AllyCommand command)
     {

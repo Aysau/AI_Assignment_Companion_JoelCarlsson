@@ -3,6 +3,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerCompanionCommander : MonoBehaviour
 {
+    [SerializeField] CrosshairFeedback crosshair;
     [SerializeField] float interactCooldown = 1f;
     float currentInteractCooldown;
 
@@ -43,7 +44,7 @@ public class PlayerCompanionCommander : MonoBehaviour
     {
         DetectLookTarget();
         currentInteractCooldown = Mathf.Max(0, currentInteractCooldown - Time.deltaTime);
-        //Issue command
+        
     }
 
     void DetectLookTarget()
@@ -60,11 +61,16 @@ public class PlayerCompanionCommander : MonoBehaviour
         {
             currentLookTarget = hit.collider.gameObject;
 
-            //TODO Crosshair change color or something
+            if(currentLookTarget != null)
+            {
+                crosshair.SetForTarget(currentLookTarget);
+            }
+
         }
         else
         {
             currentLookTarget = null;
+            crosshair.SetNormal();
         }
     }
 
@@ -78,15 +84,18 @@ public class PlayerCompanionCommander : MonoBehaviour
             if (currentLookTarget.CompareTag("Enemy"))
             {
                 IssueAttackCommand(currentLookTarget);
+                crosshair.FlashCommandIssued();
 
             }
             else if (currentLookTarget.CompareTag("Interactable"))
             {
                 IssueInteractCommand(currentLookTarget);
+                crosshair.FlashCommandIssued();
             }
             else if (currentLookTarget == ally)
             {
                 ToggleWaitCommand();
+                crosshair.FlashCommandIssued();
             }
             else
             {
@@ -128,8 +137,6 @@ public class PlayerCompanionCommander : MonoBehaviour
             allyCommandData.waitPosition = ally.transform.position;
             Debug.Log("[Commander] Ally commanded to wait");
         }
-
-        //TODO Maybe add feedback for command issued
     }
 
     public void CancelCurrentCommand()
