@@ -49,7 +49,7 @@ public partial class AttackNearestEnemyAction : Action
             navAgent.Value.isStopped = true;
 
             Vector3 direction = (enemy.transform.position - allyTransform.Value.position).normalized;
-            direction.y = 0; //TODO maybe wrong
+            direction.y = 0;
             if(direction != Vector3.zero)
             {
                 allyTransform.Value.rotation = Quaternion.LookRotation(direction);

@@ -39,7 +39,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Update() //Ensures we don't hurt performance too much by having a cooldown on the perception checks
     {
         perceptionTimer += Time.deltaTime;
 
@@ -62,7 +62,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         UpdateAreaSafety();
     }
 
-    private void UpdateAreaSafety()
+    private void UpdateAreaSafety() //Checks if area is safe and updates variable
     {
         commandData.isAreaSafe = true;
 
@@ -80,7 +80,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         }
     }
 
-    private void CheckThreats()
+    private void CheckThreats() //Checks for threats either near player or the ally
     {
         commandData.isSelfUnderAttack = false;
         commandData.isPlayerUnderAttack = false;
@@ -104,7 +104,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         }
     }
 
-    private void DetectHealthPickups()
+    private void DetectHealthPickups() //Detects and saves nearby health pickups
     {
         detectedHealthPickups.Clear();
 
@@ -121,7 +121,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         commandData.nearbyHealthPickups = detectedHealthPickups.ToArray();
     }
 
-    private void DetectEnemies()
+    private void DetectEnemies() //Detects and saves nearby enemies
     {
         detectedEnemies.Clear();
         Collider[] enemyColliders = Physics.OverlapSphere(transform.position, enemyDetectionRange, enemyLayer);
@@ -137,7 +137,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         commandData.nearbyEnemies = detectedEnemies.ToArray();
     }
 
-    public GameObject GetNearestEnemy()
+    public GameObject GetNearestEnemy() //Gets the nearest enemy
     {
         if (detectedEnemies.Count == 0) return null;
 
@@ -145,7 +145,7 @@ public class AllyPerceptionSystem : MonoBehaviour
         //return detectedEnemies.OrderBy(e => Vector3.Distance(transform.position, e.transform.position)).FirstOrDefault();
     }
 
-    public GameObject GetPlayerAttacker()
+    public GameObject GetPlayerAttacker() //Gets the player attacker
     {
         if(detectedEnemies.Count == 0 || playerTransform == null) return null;
 
@@ -153,26 +153,26 @@ public class AllyPerceptionSystem : MonoBehaviour
         return detectedEnemies.Where(IsValid).OrderBy(e => Vector3.Distance(playerTransform.position, e.transform.position)).FirstOrDefault();
     }
 
-    public GameObject GetNearestHealthPickup()
+    public GameObject GetNearestHealthPickup() //Gets the nearest health pickup
     {
         if (detectedHealthPickups.Count == 0) return null;
 
         return detectedHealthPickups.Where(IsValid).OrderBy(p => Vector3.Distance(transform.position, p.transform.position)).FirstOrDefault();
     }
 
-    private static bool IsValid(GameObject obj)
+    private static bool IsValid(GameObject obj) //Checks if an object is valid
     {
         return obj != null && obj.activeInHierarchy;
     }
 
-    private void CleanupDestroyedObjects()
+    private void CleanupDestroyedObjects() //Cleans up the lists to ensure no invalid objects to prevent null or similar
     {
         detectedEnemies.RemoveAll(e => !IsValid(e));
         detectedHealthPickups.RemoveAll(p => !IsValid(p));
     }
 
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected() //Show ranges in the editor to help test
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);

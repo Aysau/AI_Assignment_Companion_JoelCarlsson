@@ -64,7 +64,7 @@ public partial class NavigateToTargetAction : Action
     }
 
 
-    private GameObject GetTarget()
+    private GameObject GetTarget() //Depending on what the target type is (can be set in tree) return different values
     {
         switch (targetType.Value)
         {

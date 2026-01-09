@@ -2,7 +2,7 @@ using System;
 using Unity.Behavior;
 
 [BlackboardEnum]
-public enum CurrentCommand
+public enum CurrentCommand //Specically an enum for the blackboard and tree to make implementation easier
 {
 	None,
 	Wait,

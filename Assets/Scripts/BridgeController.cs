@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BridgeController : MonoBehaviour
+public class BridgeController : MonoBehaviour //Script for letting buttons enable/disable objects
 {
     [SerializeField] GameObject bridge;
     [SerializeField] bool startEnabled = true;

@@ -73,7 +73,7 @@ public partial class AttackPlayerAttackerAction : Action
         if (targetHealth != null)
         {
             targetHealth.TakeDamage(damageAmount);
-            Debug.Log($"[Ally] Attacking {enemy.name} for {damageAmount} damage");
+            Debug.Log($"[Ally] Attacking {enemy.name} for {damageAmount.Value} damage");
         }
         else
         {

@@ -29,7 +29,7 @@ public partial class UpdateAllyVariablesAction : Action
     [SerializeReference]
     public BlackboardVariable<bool> areaSafe;
 
-    protected override Status OnUpdate()
+    protected override Status OnUpdate() //Updates all the ally variables on the blackboard
     {
         allyHealthCritical.Value = commandData.Value.IsHealthCritical(thresholdHealthAlly);
         playerHealthLow.Value = commandData.Value.IsPlayerHealthLow(thresholdHealthPlayer);

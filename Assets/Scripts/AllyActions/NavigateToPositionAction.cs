@@ -53,7 +53,7 @@ public partial class NavigateToPositionAction : Action
         return Status.Running;
     }
 
-    private Vector3 GetTargetPosition()
+    private Vector3 GetTargetPosition() //Depending on type of position, returns it (set in tree)
     {
         switch (positionType.Value)
         {

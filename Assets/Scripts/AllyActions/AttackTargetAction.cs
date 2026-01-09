@@ -77,7 +77,7 @@ public partial class AttackTargetAction : Action
         }
  
     }
-    private GameObject GetTarget()
+    private GameObject GetTarget() //Returns different values depending on set value in the tree. To allow reusing
     {
         switch (targetType.Value)
         {

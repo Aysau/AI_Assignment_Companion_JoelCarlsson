@@ -47,7 +47,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         
     }
 
-    void DetectLookTarget()
+    void DetectLookTarget() //Checks with a raycast what is being looked at and saves it.
     {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
@@ -74,7 +74,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         }
     }
 
-    public void IssueCommand(CallbackContext context)
+    public void IssueCommand(CallbackContext context) //Called in the input system, issues commands to ally depending on what is looked at
     {
         if(currentInteractCooldown == 0)
         {
@@ -106,7 +106,7 @@ public class PlayerCompanionCommander : MonoBehaviour
 
     }
 
-    void IssueAttackCommand(GameObject enemy)
+    void IssueAttackCommand(GameObject enemy) //Orders ally to attack the looked at enemy (needs to be in range still)
     {
         allyCommandData.currentCommand = AllyCommand.AttackTarget;
         allyCommandData.targetEnemy = enemy;
@@ -115,7 +115,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         Debug.Log($"[Commander] Issued attack command on: {enemy.name}");
     }
 
-    void IssueInteractCommand(GameObject interactableObject)
+    void IssueInteractCommand(GameObject interactableObject) //Issues interact command to the ally to the targeted button
     {
         allyCommandData.currentCommand = AllyCommand.Interact;
         allyCommandData.targetObject = interactableObject;
@@ -124,7 +124,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         Debug.Log($"[Commander] Issued Interact command on: {interactableObject.name}");
     }
 
-    void ToggleWaitCommand()
+    void ToggleWaitCommand() //If the ally is looked at, commands it to wait, but this is lower priority then defending for example
     {
         if(allyCommandData.currentCommand == AllyCommand.Wait)
         {
@@ -139,7 +139,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         }
     }
 
-    public void CancelCurrentCommand()
+    public void CancelCurrentCommand() //Cancels currernt command and resets
     {
         if(allyCommandData != null)
         {
@@ -150,7 +150,7 @@ public class PlayerCompanionCommander : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() //Shows a ray in the editor for testing purposes
     {
         if (!showDebugRays || playerCamera == null) return;
 
